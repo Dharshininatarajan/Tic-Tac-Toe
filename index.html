@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-Tac-Toe</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+			flex-direction:column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+            background-color: #eee;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .cell {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: purple;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            height: 100px;
+            transition: background-color 0.3s;
+        }
+
+        .cell:hover {
+            background-color: #4987eb;
+        }
+    </style>
+</head>
+<body><h1 "align:center;">TIC-TAC-TOE</h1>
+
+    <div id="board"></div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const board = document.getElementById("board");
+            let currentPlayer = "X";
+            const cells = [];
+
+            // Create the Tic-Tac-Toe board
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement("div");
+                cell.className = "cell";
+                cell.addEventListener("click", function() {
+                    handleCellClick(i);
+                });
+                cells.push(cell);
+                board.appendChild(cell);
+            }
+
+            // Function to handle cell clicks
+            function handleCellClick(index) {
+                if (cells[index].innerHTML === "" && !checkWinner()) {
+                    cells[index].innerHTML = currentPlayer;
+                    if (checkWinner()) {
+                        alert(`Player ${currentPlayer} wins!`);
+                    } else if (cells.every(cell => cell.innerHTML !== "")) {
+                        alert("It's a draw!");
+                    } else {
+                        currentPlayer = currentPlayer === "X" ? "O" : "X";
+                    }
+                }
+            }
+
+            // Function to check for a winner
+            function checkWinner() {
+                const winPatterns = [
+                    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+                    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+                    [0, 4, 8], [2, 4, 6]              // Diagonals
+                ];
+
+                for (const pattern of winPatterns) {
+                    const [a, b, c] = pattern;
+                    if (cells[a].innerHTML !== "" &&
+                        cells[a].innerHTML === cells[b].innerHTML &&
+                        cells[a].innerHTML === cells[c].innerHTML) {
+                        cells[a].style.backgroundColor = "#8eff8e"; // Highlight the winning cells
+                        cells[b].style.backgroundColor = "#8eff8e";
+                        cells[c].style.backgroundColor = "#8eff8e";
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
+    </script>
+</body>
+</html>
